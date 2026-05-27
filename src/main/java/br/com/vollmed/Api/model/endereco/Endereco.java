@@ -28,4 +28,31 @@ public class Endereco {
         this.uf = dados.uf();
         this.cep = dados.cep();
     }
+
+    // Preciso criar um método para checar quais campos de endereco estão sendo alterados
+    public void atualizarInformacoes(DadosCadastroEndereco dados){
+        if (dados.logradouro() != null){
+            this.logradouro = dados.logradouro();
+        }
+        if (dados.numero() != null){
+            this.numero = dados.numero();
+        }
+        if (dados.complemento() != null){
+            this.complemento = dados.complemento();
+        }
+        if (dados.bairro() != null){
+            this.bairro = dados.bairro();
+        }
+        if (dados.cidade() != null){
+            this.cidade = dados.cidade();
+        }
+        if (dados.uf() != null){
+            this.uf = dados.uf();
+        }
+        if (dados.cep() != null){
+            this.cep = dados.cep();
+        }
+
+    }
+
 }
