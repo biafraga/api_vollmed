@@ -50,4 +50,9 @@ public class Medico {
         }
     }
 
+    // Método responsável por alterar o valor do status do médico
+    public void exclusaoLogica(){
+        this.ativo = false;
+    }
+
 }

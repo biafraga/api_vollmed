@@ -34,7 +34,7 @@ public class MedicoController {
 
     @GetMapping("listar") // SPRING WEB -Informa que o método é do tipo GET(LEITURA)
     public List<DadosListagemMedico> listarRegraNegocio(){
-        return medicoRepository.findAll().stream().map(DadosListagemMedico::new).toList();
+        return medicoRepository.findAll().stream().filter(Medico::getAtivo).map(DadosListagemMedico::new).toList();
 
         // findAll() -> Método que retorna uma lista de objetos do tipo DadosListagemMedico. 
         // stream() -> Método utilizado para transformar uma lista em um fluxo de dados, permitindo aplicar operações de transformação.
@@ -61,6 +61,12 @@ public class MedicoController {
     }
 
     // Exclusão lógica -> ativo = False ou True
+    @DeleteMapping("alterar-status/{id}") //endpoint só entende como hífen e não underline
+    @Transactional
+    public void alterarStatus(@PathVariable Integer id){
+        var medico = medicoRepository.getReferenceById(id); //aqui não se precisa fazer nenhuma conversão
+        medico.exclusaoLogica();
+    } 
 
 }
 
