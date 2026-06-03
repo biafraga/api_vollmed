@@ -36,3 +36,18 @@
 
 `@Embeddable`
 => Anota que essa classe irá fazer parte de uma tabela de outra classe. Ou seja, será utilizada na classe da tabela auxiliar.
+
+## RELACIONAMENTO ENTRE TABELAS NO SPRINGBOOT (utilizando o spring jpa)
+
+[@ClasseParaAtributo]
+
+[@OneToOne] -> 
+[@OneToMany] -> 
+[@ManyToOne] -> 
+[@ManyToMany] -> 
+
+[PK]-> é o atributo(campo) que identifica a tabela(objeto) no Banco de Dados.
+[FK]-> é o atributo [PK] que está mencionado em uma outra tabela, que por sua vez será uma chava estrangeira no BD.
+
+OBS:
+1. Sempre defina o lado 'dono' da `relação(@JoinColumn)` o lado que tem a `FK(chave estrangeira)`.

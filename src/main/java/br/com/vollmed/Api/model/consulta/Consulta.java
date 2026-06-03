@@ -1,11 +1,11 @@
 package br.com.vollmed.Api.model.consulta;
 
 import java.time.LocalDateTime;
+import jakarta.persistence.*;
+import lombok.Data;
 
 import br.com.vollmed.Api.model.medico.Medico;
 import br.com.vollmed.Api.model.paciente.Paciente;
-import jakarta.persistence.*;
-import lombok.Data;
 
 @Table(name = "consultas")
 @Entity
@@ -17,7 +17,12 @@ public class Consulta {
     private Integer id;
     private String observacao;
 
+    @JoinColumn(name = "medicoId")
+    @ManyToOne
     private Medico medico;
+
+    @JoinColumn(name = "pacienteId")
+    @ManyToOne
     private Paciente paciente;
 
     private LocalDateTime data;
