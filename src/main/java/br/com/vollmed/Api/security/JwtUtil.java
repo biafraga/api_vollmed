@@ -7,8 +7,22 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+
+/*
+
+ Assinar com a nossa chave secreta
+ Validar os dados recebidos
+
+ Um token JWT tem 3 partes por ponto:
+ HEADER.PAYLOAD.SIGNATURE
+ 1. HEADER -> Tipo do token e o algoritmo da requisição.
+ 2. PAYLOAD -> dados (claims) - aqui guardamos os dados do usuário, como nome e ROLE.
+ 3. SIGNATURE -> assinatura gerada com a chave secreta.
+
+ */
 
 @Component
 public class JwtUtil {
@@ -53,13 +67,23 @@ public class JwtUtil {
         return extrairClaims(token).getExpiration().before(new Date());
     }
 
-    // Assinar com a nossa chave secreta
-    // Validar os dados recebidos
+    // Método que verifica/extrai os dados do payload (segunda parte do token)
+    private Claims extrairClaims(String token) {
+        // Informa a chave secreta para que em seguida o método parser consiga verificar a assinatura vigente
+        // É a mesma usada para gerarToken() - só quem tem a jwssecret(assinatura) consegue validar
+        return Jwts.parser()
+            .verifyWith(getChave())
+            .build() // Construindo o parser com as configurações acima
+            .parseSignedClaims(token) // Faz o parse do token: Decodificar a chave e verifica se a assinatura é válida e retorna a resposta
+            // Ele lança uma exceção se: 1. o token está mal formatado, inválido ou expirado.
+            .getPayload(); // Retorna apenas o payLoad(Claims) que é a parte com os dados do usuário. Descarta o header e a assinatura, que já cumpriram o papel na verificação
+    }
 
-    // Um token JWT tem 3 partes por ponto:
-    // HEADER.PAYLOAD.SIGNATURE
-   // 1. HEADER -> Tipo do token e o algoritmo da requisição.
-   // 2. PAYLOAD -> dados (claims) - aqui guardamos os dados do usuário, como nome e ROLE.
-   // 3. SIGNATURE -> assinatura gerada com a chave secreta.
+    // Método que lê e extrai o dado do username recebido na requisição
+    private String extrairUsername(String token){
+        // getSubject() -> retorna o campo "sub" é onde gravamos o gerarToken()
+        return extrairClaims(token).getSubject();
+
+    }
     
 }
